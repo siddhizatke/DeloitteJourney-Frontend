@@ -1,0 +1,164 @@
+/* Body background */
+body {
+  background-color: #ffffff; /* Light gradient background */
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+/* Header styling */
+header {
+  background-color: #213555; /* Blue gradient */
+  color: #ffffff; /* White text */
+  text-align: center;
+  height: 70px;
+}
+
+/* Sidebar styling */
+.col-md-2 {
+  background:linear-gradient(135deg, #c099ba, #bad5fc); /* Light gray background */
+  border-right: 1px solid #ddd; /* Subtle border */
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05); /* Inner shadow */
+  padding: 10px;
+}
+
+/* Sidebar link hover effect */
+.nav-link {
+  background-color: #213555;
+  transition: color 0.3s ease, background-color 0.3s ease;
+  padding: 10px;
+  border-radius: 5px;
+}
+.text-light{
+  color: #F5EFE7; /* White text */
+  font-weight: bold;
+  text-decoration: none; /* Remove underline */
+}
+
+.nav-link:hover {
+  background-color: #F1EFEC; /* Blue hover effect */
+  color: #0b0b0b; /* White text on hover */
+}
+
+.active-link {
+  font-weight: bold;
+  color: #F1EFEC !important; /* Blue for active link */
+  text-decoration: underline;
+}
+
+/* Main content styling */
+.col-md-10 {
+  background: #F1EFEC; /* White background for main content */
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  padding: 20px;
+  margin-top: 20px;
+}
+
+/* List group item styling */
+.list-group-item {
+  display: flex; /* Use flexbox for layout */
+  justify-content: space-between; /* Space items evenly */
+  align-items: center; /* Center items vertically */
+  background: #FBFBFB; /* White background */
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+.left-section {
+  flex: 1; /* Take up available space */
+  margin-right: 20px; /* Add spacing between sections */
+}
+
+.right-section {
+  flex-shrink: 0; /* Prevent shrinking */
+  display: flex; /* Use flexbox for alignment */
+  justify-content: center; /* Center the image horizontally */
+  align-items: center; /* Center the image vertically */
+  margin-left: 20px; /* Add spacing from the left section */
+}
+
+.img-thumbnail {
+  border-radius: 10px; /* Adjust border radius for a cleaner look */
+  border: 3px solid #213555; /* Blue border */
+  width: auto; /* Adjust width for better scaling */
+  height: auto; /* Maintain aspect ratio */
+  object-fit: cover; /* Ensure the image fits properly */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+
+/* Edit button styling */
+.edit-button {
+  background-color: #213555; /* Blue button */
+  color: #F5EFE7;
+  font-weight: bold;
+  border: none;
+  border-radius: 5px;
+  padding: 8px 15px;
+  transition: background-color 0.3s ease;
+}
+
+.edit-button:hover {
+  background-color: #213555; /* Darker blue on hover */
+}
+
+/* Tabs styling */
+.nav-tabs .nav-link {
+  color: #000;
+  border: none;
+  padding: 5px 10px; /* Reduce padding for smaller tabs */
+  font-size: 14px; /* Adjust font size for a compact look */
+  border-radius: 3px; /* Slightly rounded corners */
+}
+
+.nav-tabs .nav-link.active {
+  background-color: #e3e6eb; /* Blue background for active tab */
+  color: #0b0b0b; /* Dark text for active tab */
+  border-radius: 3px; /* Match the border radius */
+}
+
+.nav-tabs {
+  color: #000;
+  margin-bottom: 10px; /* Add some spacing below the tabs */
+}
+
+/* Footer styling (optional) */
+footer {
+  background: #007bff; /* Blue background */
+  color: #ffffff; /* White text */
+  text-align: center;
+  padding: 10px;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+.container {
+  display: flex; /* Use flexbox for layout */
+  flex-wrap: nowrap; /* Prevent overlapping by keeping items in a row */
+  list-style-type: none;
+}
+
+.col-md-2 {
+  flex: 0 0 17%; /* Ensure it takes 20% of the width */
+  width: 40px;
+  max-width: 20%; /* Prevent it from growing */
+  background: #213555; /* Light gray background */
+  border-right: 1px solid #ddd; /* Subtle border */
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05); /* Inner shadow */
+  padding: 20px;
+}
+
+.col-md-10 {
+  flex: 1; /* Take the remaining space */
+  background: #F1EFEC; /* White background for main content */
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  padding: 20px;
+  margin-top: 20px;
+}

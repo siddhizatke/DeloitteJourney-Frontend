@@ -1,0 +1,70 @@
+<div id="selfieCarousel" class="carousel slide mt-5" data-bs-ride="carousel" data-bs-interval="1000">
+    <h3 class="fw-bold text-decoration-underline">Team Members</h3> <!-- Reduced size and added underline -->
+  
+  <div class="carousel-inner">
+    <div *ngFor="let teams of teamselfieList; let i = index"
+     [ngClass]="{'carousel-item': true, 'active': i === 0}"> 
+     <div class="list-group-item">
+       <!-- Left Section: description --> 
+        <div class="left-section"> 
+          <div class="fs-5" [innerHTML]="teams.teamselfieDescription">
+
+          </div> 
+         </div>
+        <!-- Right Section: Profile Picture --> 
+         <div class="right-section" > 
+          <img [src]="teams.teamImageUrl" 
+          alt="Selfie" 
+          class="img-thumbnail square-image" 
+          style="width: 250px; height: 350px;"/> 
+        </div> 
+      </div> 
+    </div>
+  
+   </div>
+  <!-- Carousel controls -->
+  <button class="carousel-control-prev" type="button" data-bs-target="#selfieCarousel" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#selfieCarousel" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+  </button>
+     <!-- Add Details Button -->
+     <div class="text-center mb-4">
+      <button class="btn btn-primary" (click)="openAddDetailsModal()">Add Details</button>
+  </div>
+</div>
+
+<!-- Modal Template -->
+<ng-template #addDetailsModal let-modal>
+  <div class="modal-header">
+      <h5 class="modal-title">Add Team Selfie</h5>
+      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+  </div>
+  <div class="modal-body">
+      <!-- Success Message -->
+      <div *ngIf="successMessage" class="alert alert-success mt-3" role="alert">
+          {{ successMessage }}
+      </div>
+
+      <form (ngSubmit)="addSelfie()">
+          <!-- Team Description Field -->
+          <div class="mb-3">
+              <label for="teamDescription" class="form-label">Team Description</label>
+              <textarea id="teamDescription" class="form-control" [(ngModel)]="newSelfieDescription" name="teamDescription" rows="5" required></textarea>
+          </div>
+
+          <!-- Team Image Field -->
+          <div class="mb-3">
+              <label for="teamImage" class="form-label">Team Image</label>
+              <input type="file" id="teamImage" class="form-control" (change)="onImageSelected($event)" required />
+          </div>
+
+          <!-- Buttons -->
+          <button type="submit" class="btn btn-primary">Add Selfie</button>
+          <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Cancel</button>
+      </form>
+  </div>
+</ng-template>

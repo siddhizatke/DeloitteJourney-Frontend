@@ -1,0 +1,242 @@
+<!-- Page Heading -->
+<div class="container-fluid">
+  <h3 class="fw-bold text-decoration-underline">About Me</h3>
+</div>
+
+<div class="container-fluid">
+  <!-- Main Container -->
+  <ul class="list-group">
+    <li class="list-group-item d-flex align-items-start" *ngFor="let pd of service.pagesDetailsList">
+      <div class="d-flex w-100">
+        <!-- Left Section: Name, Tabs, and Content -->
+        <div class="flex-grow-1">
+          <h3 class="fw-bold">{{ pd.name }}</h3>
+          <!-- Tabs Navigation -->
+          <ul class="nav nav-tabs mt-3" id="aboutMeTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button
+                class="nav-link active"
+                id="aboutMe-tab"
+                data-bs-toggle="tab"
+                data-bs-target="#aboutMe"
+                type="button"
+                role="tab"
+                aria-controls="aboutMe"
+                aria-selected="true"
+              >
+                About Me
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button
+                class="nav-link"
+                id="Resume-tab"
+                data-bs-toggle="tab"
+                data-bs-target="#Resume"
+                type="button"
+                role="tab"
+                aria-controls="Resume"
+                aria-selected="false"
+              >
+                Resume
+              </button>
+            </li>
+          </ul>
+          <!-- Tabs Content -->
+          <div class="tab-content mt-3" id="aboutMeTabsContent">
+            <div class="tab-pane fade show active" id="aboutMe" role="tabpanel" aria-labelledby="aboutMe-tab">
+              <div class="fs-5" [innerHTML]="pd.aboutMe"></div>
+            </div>
+            <div class="tab-pane fade" id="Resume" role="tabpanel" aria-labelledby="resume-tab">
+              <div class="fs-5" [innerHTML]="pd.aboutMeFormal"></div>
+            </div>
+          </div>
+        </div>
+        <!-- Right Section: Profile Picture -->
+        <div class="ms-4">
+          <img
+            [src]="pd.profilePictureUrl"
+            alt="Profile Picture"
+            class="img-thumbnail rounded-rectangle shadow-lg mb-3"
+            style="width: 450px; height: 350px;"
+          />
+        </div>
+      </div>
+    </li>
+  </ul>
+</div>
+
+
+          
+  <!-- Modal Template -->
+  <ng-template #editModal let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title">Update Details</h5>
+      <button
+        type="button"
+        class="btn-close"
+        aria-label="Close"
+        (click)="modal.dismiss()"
+      ></button>
+    </div>
+    <div class="modal-body">
+      <!-- Success Message -->
+      <div *ngIf="successMessage" class="alert alert-success mt-3" role="alert">
+        {{ successMessage }}
+      </div>
+
+      <form (ngSubmit)="updateDetails()">
+        <!-- Name Field -->
+        <div class="mb-3">
+          <label for="name" class="form-label">Name</label>
+          <input
+            type="text"
+            id="name"
+            class="form-control"
+            [(ngModel)]="selectedDetails.name"
+            name="name"
+            required
+          />
+        </div>
+
+        <!-- About Me Field -->
+        <div class="mb-3">
+          <label for="aboutMe" class="form-label">About Me</label>
+          <textarea
+            id="aboutMe"
+            class="form-control"
+            [(ngModel)]="selectedDetails.aboutMe"
+            name="aboutMe"
+            rows="5"
+            required
+          ></textarea>
+        </div>
+
+        <!-- About Me Field -->
+        <div class="mb-3">
+          <label for="aboutMe" class="form-label">Resume</label>
+          <textarea
+            id="resume"
+            class="form-control"
+            [(ngModel)]="selectedDetails.aboutMeFormal"
+            name="resume"
+            rows="5"
+            required
+          ></textarea>
+        </div>
+
+        <!-- Profile Picture Field -->
+        <div class="mb-3">
+          <label for="profilePicture" class="form-label">Profile Picture</label>
+          <input
+            type="file"
+            id="profilePicture"
+            class="form-control"
+            (change)="onProfilePictureSelected($event)"
+          />
+          <img
+            *ngIf="selectedDetails?.profilePictureUrl"
+            [src]="selectedDetails.profilePictureUrl"
+            alt="Profile Picture"
+            class="img-thumbnail mt-3" 
+            style ="width:150px; height: 150px"
+          />
+        </div>
+
+      <!-- Photos Field with Plus Sign -->
+      <div class="mb-3">
+        <label for="photos" class="form-label">Photos</label>
+        <div class="input-group">
+          <input
+            type="file"
+            id="photos"
+            class="form-control"
+            multiple
+            (change)="onPhotosSelected($event)"
+          />
+          <button type="button" class="btn btn-outline-secondary" (click)="addPhotoUrl()">
+            <i class="bi bi-plus"></i> <!-- Bootstrap icon for plus sign -->
+          </button>
+        </div>
+        <div *ngFor="let photo of selectedDetails.photosUrl; let i = index">
+          <input
+            type="file"
+            id="photo{{ i }}"
+            class="form-control "
+            [attr.id]="'photo' + i"
+            [attr.placeholder]="'Photo URL ' + (i + 1)"
+            [(ngModel)]="selectedDetails.photosUrl[i]"
+            placeholder="Photo URL"
+          />
+        </div>
+      </div>
+
+        <!-- Buttons -->
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+        <button type="button" class="btn btn-secondary"(click)="modal.dismiss()">Cancel</button>
+      </form>
+    </div>
+  </ng-template>
+
+        <!-- Edit Button -->
+      <div class="text-center mt-4">
+        <li class="container-fluid"
+        *ngFor="let pd of service.pagesDetailsList">
+          <button type="button"class="btn edit-button"(click)="openEditModal(pd, editModal)">Edit Profile</button>
+      </li>
+      </div>
+
+  <!-- Carousel -->
+  <div *ngIf="service.pagesDetailsList && service.pagesDetailsList.length > 0">
+    <div *ngFor="let pd of service.pagesDetailsList">
+      <div
+        id="carouselExampleIndicators{{ pd.name }}"
+        class="carousel slide"
+        data-bs-ride="carousel"
+        data-bs-interval="1000"
+      >
+        <div class="carousel-indicators">
+          <button
+            *ngFor="let photo of pd.photosUrl; let i = index"
+            type="button"
+            [attr.data-bs-target]="'#carouselExampleIndicators' + pd.name"
+            [attr.data-bs-slide-to]="i"
+            [class.active]="i === 0"
+            aria-current="i === 0 ? 'true' : null"
+            aria-label="'Slide ' + (i + 1)"
+          ></button>
+        </div>
+        <div class="carousel-inner">
+          <div
+            *ngFor="let photo of pd.photosUrl; let i = index"
+            class="carousel-item"
+            [class.active]="i === 0"
+          >
+            <img
+              [src]="photo"
+              class="d-block w-100"
+              alt="Photo"
+            />
+          </div>
+        </div>
+        <button
+          class="carousel-control-prev"
+          type="button"
+          [attr.data-bs-target]="'#carouselExampleIndicators' + pd.name"
+          data-bs-slide="prev"
+        >
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button
+          class="carousel-control-next"
+          type="button"
+          [attr.data-bs-target]="'#carouselExampleIndicators' + pd.name"
+          data-bs-slide="next"
+        >
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
+    </div>
+  </div>

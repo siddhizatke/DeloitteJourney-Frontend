@@ -1,0 +1,10 @@
+.alert-success {
+    font-size: 1rem;
+    font-weight: bold;
+    text-align: center;
+  }
+  
+  .text-justify {
+    text-align: justify;
+    line-height: 1.6; /* Adjust as needed */
+  }

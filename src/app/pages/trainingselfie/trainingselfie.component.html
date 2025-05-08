@@ -1,0 +1,38 @@
+<div id="selfieCarousel" class="carousel slide mt-5" data-bs-ride="carousel" data-bs-interval="1000">
+        <h3 class="fw-bold text-decoration-underline">Training Selfie</h3> <!-- Reduced size and added underline -->
+
+  <div class="carousel-inner">
+      <!-- Show a message if the list is empty -->
+      <div *ngIf="!trainingselfieList || trainingselfieList.length === 0" class="carousel-item active">
+          <div class="list-group-item text-center">
+              <h4 class="text-danger">No details available.</h4>
+          </div>
+      </div>
+
+      <!-- Display the carousel items -->
+      <div *ngFor="let ts of trainingselfieList; let i = index" [ngClass]="{'carousel-item': true, 'active': i === 0}">
+          <div class="list-group-item d-flex justify-content-between align-items-center">
+              <!-- Left Section: description -->
+              <div class="left-section">
+                  <div class="fs-5" [innerHTML]="ts.trainingDescription"></div>
+              </div>
+
+              <!-- Right Section: Profile Picture -->
+              <div class="right-section rounded-rectangle" 
+                   style="width: 250px; height: 350px;">
+                  <img [src]="ts.trainingImageUrl" alt="Selfie" class="img-thumbnail" />
+              </div>
+          </div>
+      </div>
+  </div>
+
+  <!-- Carousel controls -->
+  <button class="carousel-control-prev" type="button" data-bs-target="#selfieCarousel" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#selfieCarousel" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+  </button>
+</div>

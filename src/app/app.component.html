@@ -1,0 +1,55 @@
+<div class="container-fluid">
+  <!-- Header -->
+  <header class="p-3 shadow-sm header">
+    <h1 class="fw-bold text-light text-left">My Deloitte Journey</h1>
+  </header>
+
+  <div class="row vh-100">
+    <!-- Sidebar -->
+    <div class="col-md-2 bg-light text-dark p-4 border-end shadow-sm">
+      <ul class="nav flex-column">
+        <li class="nav-item mb-3">
+          <a
+            class="nav-link text-light fw-semibold"
+            routerLink="/aboutme"
+            routerLinkActive="active-link"
+          >
+            About Me
+          </a>
+        </li>
+        <li class="nav-item mb-3">
+          <a
+            class="nav-link text-light fw-semibold"
+            routerLink="/trainingactivities"
+            routerLinkActive="active-link"
+          >
+            Training Activities
+          </a>
+        </li>
+        <li class="nav-item mb-3">
+          <a
+            class="nav-link text-light fw-semibold"
+            routerLink="/trainingselfie"
+            routerLinkActive="active-link"
+          >
+            Training Selfie
+          </a>
+        </li>
+        <li class="nav-item mb-3">
+          <a
+            class="nav-link text-light fw-semibold"
+            routerLink="/teamselfie"
+            routerLinkActive="active-link"
+          >
+            Team Selfie
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="col-md-10 bg-white p-5 overflow-auto">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>
