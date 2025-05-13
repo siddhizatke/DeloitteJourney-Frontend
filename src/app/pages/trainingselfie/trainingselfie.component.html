@@ -1,11 +1,10 @@
+<h3 class="fw-bold h3 text-dark text-decoration-underline">Training Selfie</h3> <!-- Reduced size and added underline -->
 <div id="selfieCarousel" class="carousel slide mt-5" data-bs-ride="carousel" data-bs-interval="1000">
-        <h3 class="fw-bold text-decoration-underline">Training Selfie</h3> <!-- Reduced size and added underline -->
-
-  <div class="carousel-inner">
+          <div class="carousel-inner">
       <!-- Show a message if the list is empty -->
       <div *ngIf="!trainingselfieList || trainingselfieList.length === 0" class="carousel-item active">
-          <div class="list-group-item text-center">
-              <h4 class="text-danger">No details available.</h4>
+          <div class="list-group-item">
+              <h4 class="text-danger text-center">No details available.</h4>
           </div>
       </div>
 
@@ -13,9 +12,14 @@
       <div *ngFor="let ts of trainingselfieList; let i = index" [ngClass]="{'carousel-item': true, 'active': i === 0}">
           <div class="list-group-item d-flex justify-content-between align-items-center">
               <!-- Left Section: description -->
-              <div class="left-section">
+              <div class="left-section text-center">
                   <div class="fs-5" [innerHTML]="ts.trainingDescription"></div>
-              </div>
+                  <!-- Buttons Section --> 
+                <button class="btn btn-warning me-2" style="width: 70px; height: 50px;" (click)="openEditModal(ts)">
+                   <i class="fas fa-edit"></i></button>
+                <button class="btn btn-danger" style="width: 70px; height: 50px;" (click)="deleteSelfie(ts.id)">
+                   <i class="fas fa-trash-alt"></i></button>
+              </div>                                        
 
               <!-- Right Section: Profile Picture -->
               <div class="right-section rounded-rectangle" 
@@ -36,3 +40,28 @@
       <span class="visually-hidden">Next</span>
   </button>
 </div>
+
+<!-- Edit Modal Template -->
+<ng-template #editModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">Edit Training Selfie</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <div class="mb-3">
+      <label for="editDescription" class="form-label">Description</label>
+      <input type="text" class="form-control" id="editDescription" [(ngModel)]="editSelfieDescription">
+    </div>
+    <div class="mb-3">
+      <label for="editImage" class="form-label">Image</label>
+      <input type="file" class="form-control" id="editImage" (change)="onEditImageSelected($event)">
+    </div>
+    <div class="mb-3">
+      <img [src]="editImageUrl" alt="Selfie" class="img-thumbnail"style="width: 75px; height: 75px; object-fit: cover;"*ngIf="editImageUrl">
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.dismiss('Cross click')">Close</button>
+    <button type="button" class="btn btn-primary" (click)="editSelfie()">Save changes</button>
+  </div>
+</ng-template>

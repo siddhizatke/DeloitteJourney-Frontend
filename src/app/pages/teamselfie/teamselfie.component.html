@@ -1,70 +1,98 @@
-<div id="selfieCarousel" class="carousel slide mt-5" data-bs-ride="carousel" data-bs-interval="1000">
-    <h3 class="fw-bold text-decoration-underline">Team Members</h3> <!-- Reduced size and added underline -->
-  
-  <div class="carousel-inner">
-    <div *ngFor="let teams of teamselfieList; let i = index"
-     [ngClass]="{'carousel-item': true, 'active': i === 0}"> 
-     <div class="list-group-item">
-       <!-- Left Section: description --> 
-        <div class="left-section"> 
-          <div class="fs-5" [innerHTML]="teams.teamselfieDescription">
+<h3 class="fw-bold text-dark text-decoration-underline">Team Members</h3>
 
-          </div> 
-         </div>
-        <!-- Right Section: Profile Picture --> 
-         <div class="right-section" > 
-          <img [src]="teams.teamImageUrl" 
-          alt="Selfie" 
-          class="img-thumbnail square-image" 
-          style="width: 250px; height: 350px;"/> 
-        </div> 
-      </div> 
+<div id="selfieCarousel" class="carousel slide mt-5" data-bs-ride="carousel" data-bs-interval="500">
+    <div class="carousel-inner">
+        <div *ngIf="!teamselfieList || teamselfieList.length === 0" class="carousel-item active">
+            <div class="list-group-item">
+                <h4 class="text-danger text-center">No details available.</h4>
+            </div>
+        </div>
+
+        <div *ngFor="let teams of teamselfieList; let i = index" [ngClass]="{'carousel-item': true, 'active': i === 0}">
+            <div class="list-group-item  justify-content-between align-items-center" style = " align-items:center ;width:1100px; height: 400px;">
+                <!-- Image Section -->
+                <div class="mb-3">
+                    <img [src]="teams.teamImageUrl" alt="Selfie" class="img-thumbnail" style="width: 250px; height: 350px;" />
+                </div>
+
+                <!-- Description Section -->
+                <div class="mb-3">
+                    <div class="fs-5" [innerHTML]="teams.teamselfieDescription"></div>
+                </div>
+
+                <!-- Buttons Section -->
+                <div class="d-flex justify-content-center">
+                    <button class="btn btn-warning me-2" style="width: 70px; height: 50px;" (click)="openEditModal(teams)">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <button class="btn btn-danger" style="width: 70px; height: 50px;" (click)="deleteSelfie(teams.id)">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
-  
-   </div>
-  <!-- Carousel controls -->
-  <button class="carousel-control-prev" type="button" data-bs-target="#selfieCarousel" data-bs-slide="prev">
-      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Previous</span>
-  </button>
-  <button class="carousel-control-next" type="button" data-bs-target="#selfieCarousel" data-bs-slide="next">
-      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Next</span>
-  </button>
-     <!-- Add Details Button -->
-     <div class="text-center mb-4">
-      <button class="btn btn-primary" (click)="openAddDetailsModal()">Add Details</button>
-  </div>
+
+    <!-- Carousel controls -->
+    <button class="carousel-control-prev" type="button" data-bs-target="#selfieCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#selfieCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+
+    <!-- Add Details Button -->
+    <div class="text-center mb-4">
+        <button class="btn btn-secondary" (click)="openAddDetailsModal()">Add Details</button>
+    </div>
 </div>
 
-<!-- Modal Template -->
+<!-- Add Modal Template -->
 <ng-template #addDetailsModal let-modal>
-  <div class="modal-header">
-      <h5 class="modal-title">Add Team Selfie</h5>
-      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
-  </div>
-  <div class="modal-body">
-      <!-- Success Message -->
-      <div *ngIf="successMessage" class="alert alert-success mt-3" role="alert">
-          {{ successMessage }}
-      </div>
+    <div class="modal-header">
+        <h5 class="modal-title">Add Team Selfie</h5>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+        <form (ngSubmit)="addSelfie()">
+            <div class="mb-3">
+                <label for="teamDescription" class="form-label">Team Description</label>
+                <textarea id="teamDescription" class="form-control" [(ngModel)]="newSelfieDescription" name="teamDescription" rows="5" required></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="teamImage" class="form-label">Team Image</label>
+                <input type="file" id="teamImage" class="form-control" (change)="onImageSelected($event)" required />
+            </div>
+            <button type="submit" class="btn btn-primary">Add Selfie</button>
+            <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Cancel</button>
+        </form>
+    </div>
+</ng-template>
 
-      <form (ngSubmit)="addSelfie()">
-          <!-- Team Description Field -->
-          <div class="mb-3">
-              <label for="teamDescription" class="form-label">Team Description</label>
-              <textarea id="teamDescription" class="form-control" [(ngModel)]="newSelfieDescription" name="teamDescription" rows="5" required></textarea>
-          </div>
-
-          <!-- Team Image Field -->
-          <div class="mb-3">
-              <label for="teamImage" class="form-label">Team Image</label>
-              <input type="file" id="teamImage" class="form-control" (change)="onImageSelected($event)" required />
-          </div>
-
-          <!-- Buttons -->
-          <button type="submit" class="btn btn-primary">Add Selfie</button>
-          <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Cancel</button>
-      </form>
-  </div>
+<!-- Edit Modal Template -->
+<ng-template #editModal let-modal>
+    <div class="modal-header">
+        <h5 class="modal-title">Edit Team Selfie</h5>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+        <form (ngSubmit)="editSelfie()">
+            <div class="mb-3">
+                <label for="editDescription" class="form-label">Team Description</label>
+                <textarea id="editDescription" class="form-control" [(ngModel)]="editSelfieDescription" name="editDescription" rows="2" required></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="editImage" class="form-label">Current Image</label>
+                <img [src]="editImageUrl" alt="Current Selfie" class="img-thumbnail" style="width: 75px; height: 75px; object-fit: cover;" />
+            </div>
+            <div class="mb-3">
+                <label for="editImage" class="form-label">Change Image</label>
+                <input type="file" id="editImage" class="form-control" (change)="onEditImageSelected($event)" />
+            </div>
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+            <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Cancel</button>
+        </form>
+    </div>
 </ng-template>

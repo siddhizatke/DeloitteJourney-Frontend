@@ -4,6 +4,10 @@ export class Pagesdetails {
     aboutMe: string = "";
     aboutMeFormal: string = "";
     profilePictureUrl: string = "";
-    photosUrl: string[] = [];
+}
+export class PagesdetailsPhotos {
+    
+    photoId: number = 0;
+    photoUrl:string="";
 }
 

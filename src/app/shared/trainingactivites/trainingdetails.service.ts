@@ -11,6 +11,7 @@ export class TrainingdetailsService {
 
   constructor(private http: HttpClient) {}
 
+  // Fetch all training activities from the server
   refreshTrainingActivitiesList(): void {
     this.http.get<any[]>(this.baseUrl).subscribe(
       (data) => {

@@ -10,6 +10,7 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./trainingactivities.component.css'],
   imports: [CommonModule, FormsModule]
 })
+
 export class TrainingactivitiesComponent implements OnInit {
   showAddActivityForm = false;
 
@@ -23,12 +24,13 @@ export class TrainingactivitiesComponent implements OnInit {
 
   constructor(public service: TrainingdetailsService, private toastr: ToastrService) {}
 
+  // Initialize the component and refresh the training activities list
   ngOnInit(): void {
-    this.service.refreshTrainingActivitiesList();
+    this.service.refreshTrainingActivitiesList(); // Refreshes the list of training activities
   }
 
+  // Display a success message using Toastr
   showSuccessMessage(): void {
-    this.toastr.success('Training activity loaded successfully!');
+    this.toastr.success('Training activity loaded successfully!'); // Shows a success notification
   }
-  
 }
