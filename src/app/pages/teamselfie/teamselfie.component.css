@@ -1,18 +1,20 @@
-
-
 .list-group-item {
-    width: 100%; /* Ensure it takes full width of the carousel item */
-    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    padding: 0px; /* Adjust overall padding */
 }
 
-
-
-
-.list-group-item {
-    width: 100%; /* Ensure it takes full width of the carousel item */
-    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+.mb-2 {
+    margin-bottom: 5px; /* Reduce margin between elements */
 }
 
+.fs-5 {
+    margin-bottom: 10px; /* Reduce space below the description */
+}
 
+.d-flex {
+    margin-top:0px; /* Reduce space above the button section */
+    margin-bottom: 15px;
+}
 
-
+.img-thumbnail {
+    margin: 0 auto; /* Center the image */
+}
