@@ -2,26 +2,24 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 import { Teamselfie } from './teamselfie.model';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TeamselfieService {
-  readonly baseUrl = 'https://localhost:7139'; // Adjust the port if necessary
-  readonly serverUrl = 'https://localhost:7139/api/TeamSelfies';
-
-  constructor(private http: HttpClient) {}
+   constructor(private http: HttpClient) {}
 
   // Fetch all team selfies
   TeamselfieList(): Observable<Teamselfie[]> {
-    return this.http.get<Teamselfie[]>(`${this.serverUrl}`).pipe(
+    return this.http.get<Teamselfie[]>(`${environment.serverBaseUrl}`).pipe(
       map((data: Teamselfie[]) =>
         data.map((TeamS: Teamselfie) => {
           // Replace backslashes with forward slashes
           const path = TeamS.teamImageUrl.replace(/\\/g, '/');
           // Encode only spaces and special characters
           const encodedPath = path.split('/').map(segment => encodeURIComponent(segment)).join('/');
-          const constructedImageUrl = `${this.baseUrl}${encodedPath}`;
+          const constructedImageUrl = `${environment.apiBaseUrl}${encodedPath}`;
 
           console.log('Constructed Image URL:', constructedImageUrl);
 
@@ -40,16 +38,16 @@ export class TeamselfieService {
     formData.append('TeamDescription', teamselfieDescription);
     formData.append('TeamImage', teamImage);
 
-    return this.http.post<Teamselfie>(this.serverUrl, formData);
+    return this.http.post<Teamselfie>(environment.serverBaseUrl, formData);
   }
 
   // Update an existing team selfie
   updateTeamSelfie(id: number, formData: FormData): Observable<void> {
-    return this.http.put<void>(`${this.serverUrl}/${id}`, formData);
+    return this.http.put<void>(`${environment.serverBaseUrl}/${id}`, formData);
   }
 
   // Delete a team selfie
   deleteTeamSelfie(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.serverUrl}/${id}`);
+    return this.http.delete<void>(`${environment.serverBaseUrl}/${id}`);
   }
 }

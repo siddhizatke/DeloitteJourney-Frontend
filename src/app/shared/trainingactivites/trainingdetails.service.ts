@@ -7,7 +7,7 @@ import { environment } from '../../../environments/environment';
   providedIn: 'root'
 })
 export class TrainingdetailsService {
-  //readonly baseUrl = 'https://localhost:7139/api/Training';
+ 
   trainingActivitiesList: any[] = [];
 
   constructor(private http: HttpClient) {}

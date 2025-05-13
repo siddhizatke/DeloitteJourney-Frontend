@@ -11,7 +11,6 @@ import { environment } from '../../../environments/environment';
 export class PagesdetailsService {
   private photosListSubject = new BehaviorSubject<PagesdetailsPhotos[]>([]);
   public photosList$ = this.photosListSubject.asObservable();
-  //readonly baseUrl = 'https://localhost:7139/api'; // API endpoint
   pagesDetailsList: Pagesdetails[] = []; // Holds the fetched data
   PagesdetailsPhotosList: PagesdetailsPhotos[] = []; // Holds the fetched data for photos
 
@@ -19,7 +18,6 @@ export class PagesdetailsService {
 
   // Refresh the list of user details by fetching data from the server
   refreshList(): void {
-    //const serverBaseUrl = 'https://localhost:7139'; // Base server URL for static files
     this.http.get<Pagesdetails[]>(environment.apiBaseUrl + "/user").pipe(
       map((data: Pagesdetails[]) =>
         data.map((user: Pagesdetails) => {
@@ -37,7 +35,6 @@ export class PagesdetailsService {
     });
   }
 
-  // Refresh the list of user photos by fetching data from the server
   refreshPhotoList(): void {
     //const serverBaseUrl = 'https://localhost:7139'; // Base server URL for static files
     this.http.get<PagesdetailsPhotos[]>(`${environment.apiBaseUrl}/UserPhotos`).subscribe(

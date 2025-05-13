@@ -8,8 +8,7 @@ import { environment } from '../../../environments/environment';
   providedIn: 'root'
 })
 export class TrainingselfieService {
-  //readonly baseUrl = 'https://localhost:7139/api';
-  //readonly serverBaseUrl = 'https://localhost:7139'; // Correct base URL for images
+ 
 
   constructor(private http: HttpClient) {}
 
