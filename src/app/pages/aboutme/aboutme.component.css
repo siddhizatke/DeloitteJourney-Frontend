@@ -1,10 +1,87 @@
-.alert-success {
-    font-size: 1rem;
-    font-weight: bold;
-    text-align: center;
-  }
-  
-  .text-justify {
-    text-align: justify;
-    line-height: 1.6; /* Adjust as needed */
-  }
+.container-fluid {
+  padding: 0 15px;
+  margin-top: 0; /* Remove any top margin to move container up */
+}
+
+.row {
+  margin: 0;
+}
+
+.list-group-item {
+  padding: 15px;
+  margin-bottom: 15px;
+}
+
+.alert {
+  margin: 15px 0;
+}
+
+.nav-tabs {
+  justify-content: flex-start; /* Align tabs to the start */
+  border-bottom: 2px solid #ddd; /* Add underline */
+  width: 100%; /* Ensure underline spans full width */
+  margin-bottom: 15px; /* Add some space below the tabs */
+}
+
+.nav-tabs .nav-item {
+  margin: 0 10px; /* Add some space between tabs */
+}
+
+.nav-tabs .nav-link {
+  border: none;
+  color: #000; /* Set text color to black */
+  font-weight: bold;
+  transition: color 0.3s;
+  background-color: transparent; /* Remove background */
+  padding: 10px 20px; /* Add padding for better spacing */
+}
+
+.nav-tabs .nav-link.active {
+  color: #000; /* Keep active tab text color black */
+  border-bottom: 2px solid #213555; /* Add underline to active tab */
+}
+
+.nav-tabs .nav-link:hover {
+  color: #000; /* Change color on hover */
+}
+
+.tab-content {
+  padding: 15px;
+}
+
+.img-thumbnail {
+  padding: 10px;
+  margin: 10px;
+}
+
+.modal-header, .modal-body {
+  padding: 15px;
+}
+
+.btn {
+  margin-top: 5px;
+  margin: 15px;
+}
+
+.carousel-inner {
+  height: 500px; /* Adjust height as needed */
+}
+
+.carousel-image {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+  margin-bottom: 10px;
+}
+
+.carousel-indicators button {
+  margin: 5px;
+}
+
+.text-center {
+  margin-top: 0px; /* Further reduce margin to decrease space before button */
+}
+
+.profile-picture-container {
+  flex-shrink: 0; /* Prevent profile picture from shrinking */
+}
