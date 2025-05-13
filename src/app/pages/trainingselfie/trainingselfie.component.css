@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 /* Ensure the heading starts just after the navbar */
 #selfieCarousel {
     margin-top: 0; /* Remove any top margin */
@@ -67,7 +67,7 @@ header {
     position: relative; /* Ensure it's positioned correctly */
     z-index: 1000; /* Make sure it's above other elements */
 }
-=======
+
 /* Ensure the heading starts just after the navbar */
 #selfieCarousel {
     margin-top: 0; /* Remove any top margin */
@@ -136,4 +136,4 @@ header {
     position: relative; /* Ensure it's positioned correctly */
     z-index: 1000; /* Make sure it's above other elements */
 }
->>>>>>> fca6a9260c8f9b3b036bc9c4cee22b295259223f
+

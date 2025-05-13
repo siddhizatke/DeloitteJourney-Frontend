@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Pagesdetails, PagesdetailsPhotos } from './pagesdetails.model';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,7 @@ import { Pagesdetails, PagesdetailsPhotos } from './pagesdetails.model';
 export class PagesdetailsService {
   private photosListSubject = new BehaviorSubject<PagesdetailsPhotos[]>([]);
   public photosList$ = this.photosListSubject.asObservable();
-  readonly baseUrl = 'https://localhost:7139/api'; // API endpoint
+  //readonly baseUrl = 'https://localhost:7139/api'; // API endpoint
   pagesDetailsList: Pagesdetails[] = []; // Holds the fetched data
   PagesdetailsPhotosList: PagesdetailsPhotos[] = []; // Holds the fetched data for photos
 
@@ -18,11 +19,11 @@ export class PagesdetailsService {
 
   // Refresh the list of user details by fetching data from the server
   refreshList(): void {
-    const serverBaseUrl = 'https://localhost:7139'; // Base server URL for static files
-    this.http.get<Pagesdetails[]>(this.baseUrl + "/user").pipe(
+    //const serverBaseUrl = 'https://localhost:7139'; // Base server URL for static files
+    this.http.get<Pagesdetails[]>(environment.apiBaseUrl + "/user").pipe(
       map((data: Pagesdetails[]) =>
         data.map((user: Pagesdetails) => {
-          const constructedProfilePictureUrl = `${serverBaseUrl}${user.profilePictureUrl.replace(/\\/g, '/')}`;
+          const constructedProfilePictureUrl = `${environment.serverBaseUrl}${user.profilePictureUrl.replace(/\\/g, '/')}`;
           console.log('Constructed Profile Picture URL:', constructedProfilePictureUrl);
           return {
             ...user,
@@ -38,15 +39,15 @@ export class PagesdetailsService {
 
   // Refresh the list of user photos by fetching data from the server
   refreshPhotoList(): void {
-    const serverBaseUrl = 'https://localhost:7139'; // Base server URL for static files
-    this.http.get<PagesdetailsPhotos[]>(`${this.baseUrl}/UserPhotos`).subscribe(
+    //const serverBaseUrl = 'https://localhost:7139'; // Base server URL for static files
+    this.http.get<PagesdetailsPhotos[]>(`${environment.apiBaseUrl}/UserPhotos`).subscribe(
       (data: PagesdetailsPhotos[]) => {
         console.log('Raw API Response:', data); // Log the raw response
         this.PagesdetailsPhotosList = data.map(photo => {
           if (photo.photoUrl) { // Check for valid photo URL
             return {
               ...photo,
-              photoUrl: `${serverBaseUrl}${photo.photoUrl.replace(/\\/g, '/')}`
+              photoUrl: `${environment.serverBaseUrl}${photo.photoUrl.replace(/\\/g, '/')}`
             };
           } else {
             console.warn('Missing photoUrl for photo:', photo);
@@ -65,12 +66,12 @@ export class PagesdetailsService {
   uploadProfilePicture(file: File): Observable<string> {
     const formData = new FormData();
     formData.append('file', file);
-    return this.http.post<string>(`${this.baseUrl}/upload`, formData); // Send POST request to upload the file
+    return this.http.post<string>(`${environment.apiBaseUrl}/upload`, formData); // Send POST request to upload the file
   }
 
   // Update user details on the server
   updateUser(formData: FormData): Observable<any> {
-    const url = `${this.baseUrl}/user/${formData.get('id')}`; // Construct URL using the user ID from FormData
+    const url = `${environment.apiBaseUrl}/user/${formData.get('id')}`; // Construct URL using the user ID from FormData
     return this.http.put(url, formData); // Send PUT request with FormData to update user details
   }
 }

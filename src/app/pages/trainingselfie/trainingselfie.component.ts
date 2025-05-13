@@ -14,7 +14,6 @@ import { FormsModule } from '@angular/forms';
 })
 
 export class TrainingselfieComponent {
-  [x: string]: any;
   @ViewChild('addDetailsModal') addDetailsModal: any;
   @ViewChild('editModal') editModal: any;
   trainingselfieList: Trainingselfie[] = [];
