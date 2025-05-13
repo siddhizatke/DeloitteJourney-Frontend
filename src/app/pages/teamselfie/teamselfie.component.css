@@ -1,0 +1,8 @@
+
+.list-group-item {
+    width: 100%; /* Ensure it takes full width of the carousel item */
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+}
+
+
+
