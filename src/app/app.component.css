@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /* Navigation Bar Styling */
 .navbar {
   border-bottom: 1px solid #e0e0e0; /* Subtle bottom border for separation */
@@ -25,3 +26,32 @@ background-color: #213555;
 .nav-link:hover {
   border-bottom: 2px solid #F5EFE7; /* Underline on hover */
 }
+=======
+/* Navigation Bar Styling */
+.navbar {
+  border-bottom: 1px solid #e0e0e0; /* Subtle bottom border for separation */
+background-color: #213555; 
+}
+
+.navbar-nav {
+  width: 100%; /* Full width */
+  display: flex; /* Flexbox for equal spacing */
+  justify-content: space-around; /* Space items equally */
+}
+
+.nav-link {
+  color: #F5EFE7; /* Dark text color for visibility */
+  font-size: 18px; /* Adjusted text size for balance */
+  padding: 5px 0; /* Further reduced padding for smaller height */
+  text-align: center; /* Center text */
+  transition: border-bottom 0.3s; /* Smooth transition for underline */
+}
+
+.nav-link.active-link {
+  border-bottom: 2px solid #F5EFE7; /* Underline for active link */
+}
+
+.nav-link:hover {
+  border-bottom: 2px solid #F5EFE7; /* Underline on hover */
+}
+>>>>>>> fca6a9260c8f9b3b036bc9c4cee22b295259223f

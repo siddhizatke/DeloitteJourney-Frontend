@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 .list-group-item {
     width: 100%; /* Ensure it takes full width of the carousel item */
@@ -6,3 +7,13 @@
 
 
 
+=======
+
+.list-group-item {
+    width: 100%; /* Ensure it takes full width of the carousel item */
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+}
+
+
+
+>>>>>>> fca6a9260c8f9b3b036bc9c4cee22b295259223f
