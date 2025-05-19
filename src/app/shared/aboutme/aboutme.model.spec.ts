@@ -1,4 +1,4 @@
-import { Pagesdetails } from './pagesdetails.model';
+import { Pagesdetails } from './aboutme.model';
 
 describe('Pagesdetails', () => {
   it('should create an instance', () => {

@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { PagesdetailsService } from './pagesdetails.service'; // Adjust the path as needed
+import { PagesdetailsService } from './aboutme.service'; // Adjust the path as needed
 
 
 describe('PagesdetailsService', () => {

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { PagesdetailsService } from '../../shared/aboutme/pagesdetails.service';
-import { Pagesdetails, PagesdetailsPhotos } from '../../shared/aboutme/pagesdetails.model'; // Adjust the import path as necessary
+import { PagesdetailsService } from '../../shared/aboutme/aboutme.service';
+import { Pagesdetails, PagesdetailsPhotos } from '../../shared/aboutme/aboutme.model'; // Adjust the import path as necessary
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
