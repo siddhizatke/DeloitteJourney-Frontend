@@ -1,5 +1,7 @@
 export class Teamselfie {
     id: number = 0
-    teamImageUrl: string=""
+    teamImageBase64: string=""
     teamselfieDescription: string =""
+    imageLoaded?: boolean = false; // Flag to track if the image is loaded
+
 }

@@ -1,6 +1,7 @@
 export class Trainingselfie {
     id: number = 0
-    trainingImageUrl: string=""
+    trainingImageBase64: string=""
     trainingDescription: string =""
+
 }
 

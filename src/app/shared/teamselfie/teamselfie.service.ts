@@ -8,29 +8,26 @@ import { environment } from '../../../environments/environment';
   providedIn: 'root'
 })
 export class TeamselfieService {
+  [x: string]: any;
   constructor(private http: HttpClient) {}
 
-  // Fetch all team selfies
-  TeamselfieList(): Observable<Teamselfie[]> {
-    return this.http.get<Teamselfie[]>(`${environment.apiBaseUrl}/TeamSelfies`).pipe(
-      map((data: Teamselfie[]) =>
-        data.map((TeamS: Teamselfie) => {
-          // Replace backslashes with forward slashes
-          const path = TeamS.teamImageUrl.replace(/\\/g, '/');
-          // Encode only spaces and special characters
-          const encodedPath = path.split('/').map(segment => encodeURIComponent(segment)).join('/');
-          const constructedImageUrl = `${environment.serverBaseUrl}${encodedPath}`;
+  TeamSelfieList(): Observable<Teamselfie[]> {
+      return this.http.get<Teamselfie[]>(`${environment.apiBaseUrl}/TeamSelfies`).pipe(
+        map((data: Teamselfie[]) =>
+          data.map((TeamS: Teamselfie) => {
+             console.log('TeamSelfieList:', TeamS);
+            // If you want to modify TrainingS, do it here and return the new object.
+            // For now, just return TrainingS as is.
+            return TeamS;
+           
+          })
+        )
+      );
+    } 
 
-          console.log('Constructed Image URL:', constructedImageUrl);
-
-          return {
-            ...TeamS,
-            teamImageUrl: constructedImageUrl // Update trainingImageUrl with constructed URLs
-          };
-        })
-      )
-    );
-  }
+    getTeamSelfies(): Observable<Teamselfie[]> {
+    return this.http.get<Teamselfie[]>(`${environment.apiBaseUrl}/teamselfies`);
+    }
 
   // Add a new team selfie
   addTeamSelfie(teamselfieDescription: string, teamImage: File): Observable<Teamselfie> {

@@ -1,47 +1,58 @@
-<h3 class="fw-bold h3 text-dark text-decoration-underline">Training Selfie</h3> <!-- Reduced size and added underline -->
-<div id="selfieCarousel" class="carousel slide mt-5" data-bs-ride="carousel" data-bs-interval="1000">
-          <div class="carousel-inner">
-      <!-- Show a message if the list is empty -->
-      <div *ngIf="!trainingselfieList || trainingselfieList.length === 0" class="carousel-item active">
-          <div class="list-group-item">
-              <h4 class="text-danger text-center">No details available.</h4>
-          </div>
+  <h3 class="fw-bold h3 text-dark text-decoration-underline">Training Selfie</h3>
+    <div *ngIf="loading" class="d-flex justify-content-center align-items-center" style="min-height: 40vh;">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
       </div>
-
+    </div>  
+  <div *ngIf="!loading && trainingselfieList.length > 0" class="carousel-center-wrapper">
+  <div id="selfieCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="1000">
       <!-- Display the carousel items -->
       <div *ngFor="let ts of trainingselfieList; let i = index" [ngClass]="{'carousel-item': true, 'active': i === 0}">
-          <div class="list-group-item d-flex justify-content-between align-items-center">
-              <!-- Left Section: description -->
-              <div class="left-section text-center">
-                  <div class="fs-5" [innerHTML]="ts.trainingDescription"></div>
-                  <!-- Buttons Section --> 
-                <button class="btn btn-warning me-2" style="width: 70px; height: 50px;" (click)="openEditModal(ts)">
-                   <i class="fas fa-edit"></i></button>
-                <button class="btn btn-danger" style="width: 70px; height: 50px;" (click)="deleteSelfie(ts.id)">
-                   <i class="fas fa-trash-alt"></i></button>
-              </div>                                        
-
-              <!-- Right Section: Profile Picture -->
-              <div class="right-section rounded-rectangle" 
-                   style="width: 250px; height: 350px;">
-                  <img [src]="ts.trainingImageUrl" alt="Selfie" class="img-thumbnail" />
+        <div class="list-group-item">
+          <div class="row align-items-center">
+            <div class="col-12 col-md-5 d-flex justify-content-center">
+              <div class="selfie-img-container">
+                <img [src]="'data:image/jpeg;base64,' + ts.trainingImageBase64"
+                     alt="Selfie"
+                     class="img-thumbnail img-fluid shadow"
+                     (load)="onImageLoad(i)"
+                    [style.visibility]="loadingImages[i] ? 'hidden' : 'visible'"
+                     />
               </div>
-          </div>
-      </div>
-  </div>
+            </div>
+            <div class="col-12 col-md-7 text-center mb-3 mb-md-0">
+              <div class="fs-5 mb-3" [innerHTML]="ts.trainingDescription">
 
-  <!-- Carousel controls -->
-  <button class="carousel-control-prev" type="button" data-bs-target="#selfieCarousel" data-bs-slide="prev">
+              </div>
+              <button class="btn btn-warning me-2" (click)="openEditModal(ts)">
+                <i class="fas fa-edit"></i>
+              </button>
+              <button class="btn btn-danger" (click)="deleteSelfie(ts.id)">
+                <i class="fas fa-trash-alt"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Carousel controls -->
+    <button class="carousel-control-prev" type="button" data-bs-target="#selfieCarousel" data-bs-slide="prev">
       <span class="carousel-control-prev-icon" aria-hidden="true"></span>
       <span class="visually-hidden">Previous</span>
-  </button>
-  <button class="carousel-control-next" type="button" data-bs-target="#selfieCarousel" data-bs-slide="next">
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#selfieCarousel" data-bs-slide="next">
       <span class="carousel-control-next-icon" aria-hidden="true"></span>
       <span class="visually-hidden">Next</span>
-  </button>
-</div>
+    </button>
+  </div>
 
-<!-- Edit Modal Template -->
+  <ng-template #noDetails>
+    <div *ngIf="!loading && trainingselfieList.length === 0" class="text-center text-muted mt-4">
+      No details available
+    </div>
+  </ng-template>
+<!-- Edit Modal Template (unchanged) -->
 <ng-template #editModal let-modal>
   <div class="modal-header">
     <h4 class="modal-title">Edit Training Selfie</h4>
@@ -57,7 +68,7 @@
       <input type="file" class="form-control" id="editImage" (change)="onEditImageSelected($event)">
     </div>
     <div class="mb-3">
-      <img [src]="editImageUrl" alt="Selfie" class="img-thumbnail"style="width: 75px; height: 75px; object-fit: cover;"*ngIf="editImageUrl">
+      <img [src]="editImageUrl" alt="Selfie" class="img-thumbnail" style="width: 75px; height: 75px; object-fit: cover;" *ngIf="editImageUrl">
     </div>
   </div>
   <div class="modal-footer">
@@ -65,5 +76,3 @@
     <button type="button" class="btn btn-primary" (click)="editSelfie()">Save changes</button>
   </div>
 </ng-template>
-
-

@@ -3,11 +3,11 @@ export class Pagesdetails {
     name: string = "";
     aboutMe: string = "";
     aboutMeFormal: string = "";
-    profilePictureUrl: string = "";
+    profilePictureBase64: string = "";
 }
 export class PagesdetailsPhotos {
     
     photoId: number = 0;
-    photoUrl:string="";
+    photoBase64:string="";
 }
 

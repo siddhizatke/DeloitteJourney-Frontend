@@ -22,10 +22,11 @@ export class TrainingselfieComponent {
   selectedImage: File | null = null;
   editSelfieDescription: string = '';
   editSelectedImage: File | null = null;
-  editImageUrl: string = ''; // To store the current image URL
+  editImageUrl: string = ''; 
   successMessage: string = '';
   editingSelfieId: number | null = null;
-
+ loadingImages: boolean[] = [];
+ loading: boolean = true; 
   constructor(private trainingselfieService: TrainingselfieService, private cdr: ChangeDetectorRef, private modalService: NgbModal) {}
 
   // Initialize the component and load training selfies
@@ -35,16 +36,24 @@ export class TrainingselfieComponent {
 
   // Load the list of training selfies from the service
   loadTrainingSelfies(): void {
-    this.trainingselfieService.TrainingselfieList().subscribe(
-      (data: Trainingselfie[]) => {
-        this.trainingselfieList = data; // Update the local list with fetched data
-        this.cdr.detectChanges(); // Trigger change detection
-      },
-      (error) => {
-        console.error('Error fetching training selfies:', error); // Log any errors
-      }
-    );
-  }
+  this.loading = true; // Use a separate loading flag for spinner
+  this.trainingselfieService.getTrainingSelfie().subscribe(
+    (data: Trainingselfie[]) => {
+      this.trainingselfieList = data;
+      this.loadingImages = data.map(() => true); // Initialize loadingImages as an array
+      this.loading = false;
+    },
+    () => {
+      this.loading = false;
+    }
+  );
+}
+    
+     onImageLoad(i: number) {
+          this.loadingImages[i] = false;
+          this.cdr.detectChanges();
+    }
+  
 
   // Open the modal to add new training selfie details
   openAddDetailsModal() {
@@ -53,11 +62,11 @@ export class TrainingselfieComponent {
 
   // Open the modal to edit an existing training selfie
   openEditModal(selfie: Trainingselfie) {
-    this.editingSelfieId = selfie.id; // Store the ID of the selfie being edited
-    this.editSelfieDescription = selfie.trainingDescription; // Set the current description
-    this.editImageUrl = selfie.trainingImageUrl; // Set the current image URL
-    this.modalService.open(this.editModal); // Open the edit modal
-  }
+  this.editingSelfieId = selfie.id; // Store the ID of the selfie being edited
+  this.editSelfieDescription = selfie.trainingDescription; // Set the current description
+  this.editImageUrl = ''; // Reset the edit image URL
+  this.modalService.open(this.editModal); // Open the edit modal
+}
 
   // Handle the selection of a new image for adding
   onImageSelected(event: any) {
@@ -83,34 +92,31 @@ export class TrainingselfieComponent {
 
   // Edit an existing training selfie
   editSelfie() {
-    if (this.editingSelfieId !== null) {
-      const formData = new FormData();
-      formData.append('Id', this.editingSelfieId.toString()); // Use the stored ID
-      formData.append('TrainingDescription', this.editSelfieDescription);
-      if (this.editSelectedImage) {
-        formData.append('TrainingImage', this.editSelectedImage); // Append the selected image if any
-      }
-
-      this.trainingselfieService.updateTrainingSelfie(this.editingSelfieId, formData).subscribe(
-        () => {
-          const index = this.trainingselfieList.findIndex(item => item.id === this.editingSelfieId);
-          if (index !== -1) {
-            this.trainingselfieList[index].trainingDescription = this.editSelfieDescription; // Update the description
-            this.trainingselfieList[index].trainingImageUrl = this.editImageUrl; // Update the image URL
-          }
-          this.successMessage = 'Training selfie updated successfully!'; // Set success message
-          this.cdr.detectChanges(); // Trigger change detection
-          this.modalService.dismissAll(); // Close the modal
-        },
-        (error) => {
-          console.error('Error editing training selfie:', error); // Log any errors
-          alert('Failed to update training selfie. Please try again.'); // Alert the user on failure
-        }
-      );
-    } else {
-      console.error('Editing Selfie ID is null'); // Log if no ID is set for editing
+  if (this.editingSelfieId !== null) {
+    const formData = new FormData();
+    formData.append('Id', this.editingSelfieId.toString());
+    formData.append('TrainingDescription', this.editSelfieDescription);
+    if (this.editSelectedImage) {
+      formData.append('TrainingImage', this.editSelectedImage);
     }
+
+    this.trainingselfieService.updateTrainingSelfie(this.editingSelfieId, formData).subscribe(
+      () => {
+        this.successMessage = 'Training selfie updated successfully!';
+        this.loadTrainingSelfies(); // Reload from backend to get new Base64
+        this.cdr.detectChanges();
+        this.modalService.dismissAll();
+      },
+      (error: any) => {
+        console.error('Error editing training selfie:', error);
+        alert('Failed to update training selfie. Please try again.');
+      }
+    );
+  } else {
+    console.error('Editing Selfie ID is null');
   }
+}
+
 
   // Delete a training selfie
   deleteSelfie(id: number) {
@@ -120,7 +126,7 @@ export class TrainingselfieComponent {
         this.successMessage = 'Training selfie deleted successfully!'; // Set success message
         this.cdr.detectChanges(); // Trigger change detection
       },
-      (error) => {
+      (error: any) => {
         console.error('Error deleting training selfie:', error); // Log any errors
       }
     );

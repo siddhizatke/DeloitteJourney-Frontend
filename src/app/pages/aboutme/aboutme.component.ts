@@ -21,13 +21,14 @@ export class AboutmeComponent implements OnInit {
   selectedPhotos: File[] = []; // Stores the selected photos files
   selectedFile: File | null = null; // Stores the selected file for upload
   selectedFilePreviewUrl: SafeUrl | null = null; // Stores the preview URL of the selected file
-  selectedDetails: Pagesdetails = { // Object to store the selected details
+  selectedDetails: Pagesdetails = {
     id: 0, // Replace with the actual structure of your Pagesdetails model
     name: '',
     aboutMe: '',
     aboutMeFormal: '',
-    profilePictureUrl: ''
+    profilePictureBase64: ''
   };
+ loadingImages: boolean[] = []; // Loading state for images
   successMessage: string = ''; // Message to display upon successful update
   PagesdetailsService: any; // Placeholder for the service, if needed
 
@@ -40,12 +41,12 @@ export class AboutmeComponent implements OnInit {
   ngOnInit(): void {
     this.service.refreshList(); // Refreshes the list of page details
     this.service.refreshPhotoList(); // Refreshes the list of photos
+  this.loadingImages = this.PagesdetailsPhotosList.map(() => true);    
+}
+    
 
-    // Subscribe to the photos list observable
-    this.service.photosList$.subscribe(data => {
-      this.PagesdetailsPhotosList = data; // Updates the photos list in the component
-      console.log('PagesdetailsPhotosList in Component:', this.PagesdetailsPhotosList); // Debugging log
-    });
+  onImageLoad(index: number) {
+    this.loadingImages[index] = false;
   }
 
   // Fallback for broken images

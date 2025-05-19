@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { BehaviorSubject, map, Observable } from 'rxjs';
 import { Pagesdetails, PagesdetailsPhotos } from './pagesdetails.model';
 import { environment } from '../../../environments/environment';
 
@@ -9,33 +8,39 @@ import { environment } from '../../../environments/environment';
   providedIn: 'root'
 })
 export class PagesdetailsService {
-  private photosListSubject = new BehaviorSubject<PagesdetailsPhotos[]>([]);
-  public photosList$ = this.photosListSubject.asObservable();
-  pagesDetailsList: Pagesdetails[] = []; // Holds the fetched data
-  PagesdetailsPhotosList: PagesdetailsPhotos[] = []; // Holds the fetched data for photos
+  pagesDetailsList: Pagesdetails[] = [];
+  private pagesDetailsListSubject = new BehaviorSubject<Pagesdetails[]>([]);
+  public pagesDetailsList$ = this.pagesDetailsListSubject.asObservable();
+  PagesdetailsPhotosList: PagesdetailsPhotos[] = [];
+  private PagesdetailsPhotosListSubject = new BehaviorSubject<PagesdetailsPhotos[]>([]);
+  photosList$: any;
 
   constructor(private http: HttpClient) {}
 
-  // Refresh the list of user details by fetching data from the server
   refreshList(): void {
-    this.http.get<Pagesdetails[]>(environment.apiBaseUrl + "/user").pipe(
-      map((data: Pagesdetails[]) =>
-        data.map((user: Pagesdetails) => {
-          const constructedProfilePictureUrl = `${environment.serverBaseUrl}${user.profilePictureUrl.replace(/\\/g, '/')}`;
-          console.log('Constructed Profile Picture URL:', constructedProfilePictureUrl);
-          return {
-            ...user,
-            profilePictureUrl: constructedProfilePictureUrl,
-          };
-        })
-      )
-    ).subscribe((data: Pagesdetails[]) => {
-      this.pagesDetailsList = data; // Update the list with fetched data
-      console.log('List refreshed:', this.pagesDetailsList); // Debugging log
-    });
+    this.http.get<Pagesdetails[]>(environment.apiBaseUrl + "/user")
+      .subscribe((data: Pagesdetails[]) => {
+        this.pagesDetailsList = data;
+        this.pagesDetailsListSubject.next(data);
+      });
   }
 
   refreshPhotoList(): void {
+    this.http.get<PagesdetailsPhotos[]>(`${environment.apiBaseUrl}/UserPhotos`)
+      .subscribe((photo: PagesdetailsPhotos[]) => {
+        this.PagesdetailsPhotosList = photo;
+        this.PagesdetailsPhotosListSubject.next(photo);
+        console.log('PagesdetailsPhotosList in Service:', this.PagesdetailsPhotosList); // Debugging log
+      });
+  }
+  updateUser(formData: FormData) {
+    const url = `${environment.apiBaseUrl}/user/${formData.get('id')}`;
+    return this.http.put(url, formData);
+  }
+
+
+
+ /*  refreshPhotoList(): void {
     //const serverBaseUrl = 'https://localhost:7139'; // Base server URL for static files
     this.http.get<PagesdetailsPhotos[]>(`${environment.apiBaseUrl}/UserPhotos`).subscribe(
       (data: PagesdetailsPhotos[]) => {
@@ -57,18 +62,21 @@ export class PagesdetailsService {
         console.error('Error fetching data:', error); // Log any errors
       }
     );
-  }
+  } */
 
   // Upload a profile picture to the server
-  uploadProfilePicture(file: File): Observable<string> {
-    const formData = new FormData();
-    formData.append('file', file);
-    return this.http.post<string>(`${environment.apiBaseUrl}/upload`, formData); // Send POST request to upload the file
-  }
+    updateProfilePhoto(user: any, file: File): Observable<string> {
+      const updateForm = new FormData();
+      updateForm.append('Id', user.id.toString());
+      updateForm.append('Name', user.name || '');
+      updateForm.append('AboutMe', user.aboutMe || '');
+      updateForm.append('AboutMeFormal', user.aboutMeFormal || '');
+      updateForm.append('ProfilePicture', file);
 
-  // Update user details on the server
-  updateUser(formData: FormData): Observable<any> {
-    const url = `${environment.apiBaseUrl}/user/${formData.get('id')}`; // Construct URL using the user ID from FormData
-    return this.http.put(url, formData); // Send PUT request with FormData to update user details
-  }
+      return this.http.put<any>(`${environment.apiBaseUrl}/user/${user.id}`, updateForm).pipe(
+        map((user: any) => {
+          return `${environment.serverBaseUrl}${user.profilePictureUrl?.replace(/\\/g, '/')}`;
+        })
+      );
+    }
 }

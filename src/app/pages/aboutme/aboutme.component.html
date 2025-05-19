@@ -1,59 +1,51 @@
 <div class="container-fluid mt-3">
   <div class="row justify-content-center">
-    <!-- Show a message if the list is empty -->
-    <div *ngIf="!service.pagesDetailsList || service.pagesDetailsList.length === 0" class="text-center">
-      <p class="text-danger fw-bold">No Data Available.</p>
-    </div>
-
-    <div class="container-fluid">
-      <!-- Main Container -->
+    <div class="col-12 col-md-10">
       <ul class="list-group">
-        <!-- Success Message -->
-        <div *ngIf="successMessage" class="alert alert-success mt-3" role="alert">
-          {{ successMessage }}
-        </div>
-
-        <li class="list-group-item d-flex align-items-start" *ngFor="let pd of service.pagesDetailsList">
-          <div class="d-flex w-100">
-            <!-- Left Section: Name, Tabs, and Content -->
-            <div class="flex-grow-1">
+        <li class="list-group-item" *ngFor="let pd of service.pagesDetailsList">
+          <div class="row align-items-center">
+            <!-- Left: Name, Tabs, Content -->
+            <div class="col-12 col-md-8">
               <h3 class="fw-bold">{{ pd.name }}</h3>
               <!-- Tabs Navigation -->
-              <ul class="nav nav-tabs mt-3 custom-tabs" id="aboutMeTabs" role="tablist">
+              <ul class="nav nav-tabs mt-3" id="aboutMeTabs" role="tablist">
                 <li class="nav-item" role="presentation">
-                  <button class="nav-link active" id="aboutMe-tab" data-bs-toggle="tab" data-bs-target="#aboutMe" type="button" role="tab" aria-controls="aboutMe" aria-selected="true">
+                  <button class="nav-link active" id="personal-tab" data-bs-toggle="tab" data-bs-target="#personal" type="button" role="tab" aria-controls="personal" aria-selected="true">
                     Personal
                   </button>
                 </li>
                 <li class="nav-item" role="presentation">
-                  <button class="nav-link" id="Resume-tab" data-bs-toggle="tab" data-bs-target="#Resume" type="button" role="tab" aria-controls="Resume" aria-selected="false">
+                  <button class="nav-link" id="professional-tab" data-bs-toggle="tab" data-bs-target="#professional" type="button" role="tab" aria-controls="professional" aria-selected="false">
                     Professional
                   </button>
                 </li>
               </ul>
               <!-- Tabs Content -->
               <div class="tab-content mt-3" id="aboutMeTabsContent">
-                <div class="tab-pane fade show active" id="aboutMe" role="tabpanel" aria-labelledby="aboutMe-tab" style="width: 600px;">
+                <div class="tab-pane fade show active" id="personal" role="tabpanel" aria-labelledby="personal-tab">
                   <div class="fs-5" [innerHTML]="pd.aboutMe"></div>
                 </div>
-                <div class="tab-pane fade" id="Resume" role="tabpanel" aria-labelledby="Resume-tab" style="width: 600px;">
+                <div class="tab-pane fade" id="professional" role="tabpanel" aria-labelledby="professional-tab">
                   <div class="fs-5" [innerHTML]="pd.aboutMeFormal"></div>
                 </div>
               </div>
             </div>
-            <!-- Right Section: Profile Picture -->
-            <div class="ms-4">
-              <img
-                [src]="pd.profilePictureUrl"
+            <!-- Right: Profile Photo -->
+            <div class="col-12 col-md-4 d-flex justify-content-center mt-3 mt-md-0">
+              <img 
+                [src]="'data:image/jpeg;base64,' + pd.profilePictureBase64"
                 alt="Profile Picture"
-                class="img-thumbnail rounded-rectangle shadow-lg mb-3"
-                style="width: 450px; height: 350px;"
+                class="img-thumbnail img-fluid shadow-lg"
+                style="max-width: 350px; width: 100%; height: auto;"
               />
             </div>
           </div>
         </li>
       </ul>
     </div>
+  </div>
+</div>
+
 
     <!-- Modal Template -->
     <ng-template #editModal let-modal>
@@ -86,7 +78,7 @@
             <label for="profilePicture" class="form-label">Profile Picture</label>
             <input type="file" id="profilePicture" class="form-control" (change)="onProfilePictureSelected($event)" />
             <img *ngIf="selectedFile" [src]="selectedFilePreviewUrl" alt="Profile Picture Preview" class="img-thumbnail mt-3" style="width: 150px; height: 150px;" />
-            <img *ngIf="!selectedFile && selectedDetails?.profilePictureUrl" [src]="selectedDetails.profilePictureUrl" alt="Profile Picture" class="img-thumbnail mt-3" style="width: 150px; height: 150px;" />
+            <img *ngIf="!selectedFile && selectedDetails?.profilePictureBase64" [src]="selectedDetails.profilePictureBase64" alt="Profile Picture" class="img-thumbnail mt-3" style="width: 150px; height: 150px;" />
           </div>
 
           <!-- Buttons -->
@@ -98,30 +90,27 @@
 
     <!-- Edit Button -->
     <li class="container-fluid text-center" *ngFor="let pd of service.pagesDetailsList">
-        <button type="button" class="btn edit-button" (click)="openEditModal(pd, editModal)">Edit Profile</button>
-      </li>
+      <button type="button" class="btn edit-button" (click)="openEditModal(pd, editModal)">Edit Profile</button>
+    </li>
+
     <!-- Carousel -->
+     <div class="carousel-center-wrapper">
     <div *ngIf="service.PagesdetailsPhotosList && service.PagesdetailsPhotosList.length > 0">
       <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel" data-bs-interval="500">
         <div class="carousel-indicators">
-          <button
-            *ngFor="let photo of service.PagesdetailsPhotosList; let i = index"
-            type="button"
-            [attr.data-bs-target]="'#carouselExampleIndicators'"
-            [attr.data-bs-slide-to]="i"
-            [class.active]="i === 0"
-            aria-current="i === 0 ? 'true' : 'false'"
-            [attr.aria-label]="'Slide ' + (i + 1)"
-          ></button>
+          <button *ngFor="let photo of service.PagesdetailsPhotosList; let i = index" type="button" [attr.data-bs-target]="'#carouselExampleIndicators'" [attr.data-bs-slide-to]="i" [class.active]="i === 0" aria-current="i === 0 ? 'true' : 'false'" [attr.aria-label]="'Slide ' + (i + 1)"></button>
         </div>
         <div class="carousel-inner">
           <div *ngFor="let photo of service.PagesdetailsPhotosList; let i = index" class="carousel-item" [class.active]="i === 0">
-            <img
-              [src]="photo.photoUrl"
-              alt="Photo"
-              class="d-block w-100 carousel-image"
-            />
-          </div>
+             <img 
+        [src]="'data:image/jpeg;base64,' + photo.photoBase64"
+        alt="Photo"
+        class="d-block carousel-image"
+        (load)="onImageLoad(i)"
+        (error)="onImageError($event, photo.photoBase64)"
+        [style.visibility]="loadingImages[i] ? 'hidden' : 'visible'"
+      />
+    </div>
         </div>
         <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
           <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -134,7 +123,3 @@
       </div>
     </div>
   </div>
-</div>
-
-
-
