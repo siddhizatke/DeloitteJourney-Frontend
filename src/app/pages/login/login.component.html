@@ -1,0 +1,71 @@
+<mat-card class="auth-card">
+  <mat-card-content>
+    <div class="auth-title">
+      <h2 *ngIf="showLogin">Log In</h2>
+      <h2 *ngIf="!showLogin">Register</h2>
+    </div>
+
+    <!-- Error Message -->
+    <mat-error *ngIf="errorMessage" class="error-message">
+      {{ errorMessage }}
+    </mat-error>
+
+    <!-- Login Form -->
+    <form *ngIf="showLogin" (ngSubmit)="onLogin()" #loginForm="ngForm" class="auth-form">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Username</mat-label>
+        <input matInput [(ngModel)]="username" name="username" required autocomplete="username">
+        <mat-error *ngIf="loginForm.controls['username']?.invalid">Please provide a valid Username</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Password</mat-label>
+        <input matInput [type]="hide() ? 'password' : 'text'"
+               [(ngModel)]="password" name="password" required autocomplete="current-password">
+        <button mat-icon-button matSuffix type="button"style =color:blue
+                (click)="clickEvent($event)"
+                [attr.aria-label]="'Show/hide password'">
+          <mat-icon>{{hide() ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
+        <mat-error *ngIf="loginForm.controls['password']?.invalid">Please provide a valid password</mat-error>
+      </mat-form-field>
+
+      <button mat-raised-button color="blue" class="full-width" [disabled]="!loginForm.form.valid || showSpinner">
+        Login
+      </button>
+      <div class="switch-link">
+        <span>Not signed up?</span>
+        <button  mat-button type="button" (click)="switchToRegister()">Register here</button>
+      </div>
+    </form>
+
+    <!-- Register Form -->
+    <form *ngIf="!showLogin" (ngSubmit)="onRegister()" #registerForm="ngForm" class="auth-form">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Username</mat-label>
+        <input matInput [(ngModel)]="username" name="username" required autocomplete="username">
+        <mat-error *ngIf="registerForm.controls['username']?.invalid">Please provide a valid Username</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Password</mat-label>
+        <input matInput [type]="hide() ? 'password' : 'text'"
+               [(ngModel)]="password" name="password" required autocomplete="new-password">
+        <button mat-icon-button matSuffix type="button"style =color:blue
+                (click)="clickEvent($event)"
+                [attr.aria-label]="'Show/hide password'">
+          <mat-icon>{{hide() ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
+        <mat-error *ngIf="registerForm.controls['password']?.invalid">Please provide a valid password</mat-error>
+      </mat-form-field>
+
+      <button mat-raised-button color="blue" class="full-width" [disabled]="!registerForm.form.valid || showSpinner">
+        Register
+      </button>
+      <div class="switch-link">
+        <span>Already have an account?</span>
+        <button mat-button type="button" color="blue" (click)="switchToLogin()">Click here to login</button>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>

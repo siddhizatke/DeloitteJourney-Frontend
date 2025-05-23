@@ -22,33 +22,48 @@ export class TrainingselfieComponent {
   selectedImage: File | null = null;
   editSelfieDescription: string = '';
   editSelectedImage: File | null = null;
-  editImageUrl: string = ''; 
+  editImageUrl: string = '';
+  formErrorMessage: string = ''; 
   successMessage: string = '';
   editingSelfieId: number | null = null;
  loadingImages: boolean[] = [];
  loading: boolean = true; 
+   userRole: string = '';
   constructor(private trainingselfieService: TrainingselfieService, private cdr: ChangeDetectorRef, private modalService: NgbModal) {}
 
   // Initialize the component and load training selfies
   ngOnInit(): void {
     this.loadTrainingSelfies(); // Load the training selfies when the component initializes
+    const user = sessionStorage.getItem('user');
+    if (user) {
+      this.userRole = JSON.parse(user).role; // Ensure 'roles' matches the backend response field
+    console.log('User role:', this.userRole);
+    }
   }
 
   // Load the list of training selfies from the service
   loadTrainingSelfies(): void {
-  this.loading = true; // Use a separate loading flag for spinner
-  this.trainingselfieService.getTrainingSelfie().subscribe(
-    (data: Trainingselfie[]) => {
-      this.trainingselfieList = data;
-      this.loadingImages = data.map(() => true); // Initialize loadingImages as an array
-      this.loading = false;
-    },
-    () => {
-      this.loading = false;
-    }
-  );
-}
-    
+    this.loading = true;
+    this.trainingselfieService.getTrainingSelfie().subscribe(
+      (data: Trainingselfie[]) => {
+        this.trainingselfieList = data;
+        this.loadingImages = data.map(() => true);
+        this.loading = false;
+      },
+      (error) => {
+        this.formErrorMessage = error?.error?.message || 'Failed to load training selfies. Please try again.';
+        this.loading = false;
+        this.clearMessages();
+      }
+    );
+  }
+
+     private clearMessages() {
+    setTimeout(() => {
+      this.successMessage = '';
+      this.formErrorMessage = '';
+    }, 3000);
+  }
      onImageLoad(i: number) {
           this.loadingImages[i] = false;
           this.cdr.detectChanges();
@@ -92,42 +107,46 @@ export class TrainingselfieComponent {
 
   // Edit an existing training selfie
   editSelfie() {
-  if (this.editingSelfieId !== null) {
-    const formData = new FormData();
-    formData.append('Id', this.editingSelfieId.toString());
-    formData.append('TrainingDescription', this.editSelfieDescription);
-    if (this.editSelectedImage) {
-      formData.append('TrainingImage', this.editSelectedImage);
-    }
-
-    this.trainingselfieService.updateTrainingSelfie(this.editingSelfieId, formData).subscribe(
-      () => {
-        this.successMessage = 'Training selfie updated successfully!';
-        this.loadTrainingSelfies(); // Reload from backend to get new Base64
-        this.cdr.detectChanges();
-        this.modalService.dismissAll();
-      },
-      (error: any) => {
-        console.error('Error editing training selfie:', error);
-        alert('Failed to update training selfie. Please try again.');
+    if (this.editingSelfieId !== null) {
+      const formData = new FormData();
+      formData.append('Id', this.editingSelfieId.toString());
+      formData.append('TrainingDescription', this.editSelfieDescription);
+      if (this.editSelectedImage) {
+        formData.append('TrainingImage', this.editSelectedImage);
       }
-    );
-  } else {
-    console.error('Editing Selfie ID is null');
+
+      this.trainingselfieService.updateTrainingSelfie(this.editingSelfieId, formData).subscribe(
+        () => {
+          this.successMessage = 'Training selfie updated successfully!';
+          this.loadTrainingSelfies();
+          this.cdr.detectChanges();
+          this.modalService.dismissAll();
+          this.clearMessages();
+        },
+        (error: any) => {
+          this.formErrorMessage = error?.error?.message || 'Failed to update training selfie. Please try again.';
+          this.clearMessages();
+        }
+      );
+    } else {
+      this.formErrorMessage = 'Editing Selfie ID is null';
+      this.clearMessages();
+    }
   }
-}
 
 
   // Delete a training selfie
   deleteSelfie(id: number) {
     this.trainingselfieService.deleteTrainingSelfie(id).subscribe(
       () => {
-        this.trainingselfieList = this.trainingselfieList.filter(item => item.id !== id); // Remove the deleted selfie from the list
-        this.successMessage = 'Training selfie deleted successfully!'; // Set success message
-        this.cdr.detectChanges(); // Trigger change detection
+        this.trainingselfieList = this.trainingselfieList.filter(item => item.id !== id);
+        this.successMessage = 'Training selfie deleted successfully!';
+        this.cdr.detectChanges();
+        this.clearMessages();
       },
       (error: any) => {
-        console.error('Error deleting training selfie:', error); // Log any errors
+        this.formErrorMessage = error?.error?.message || 'Failed to delete training selfie. Please try again.';
+        this.clearMessages();
       }
     );
   }

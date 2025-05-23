@@ -11,8 +11,25 @@ import { AboutmeComponent } from "./pages/aboutme/aboutme.component";
 })
 export class AppComponent {
   title = 'MyDeloitteJourney';
+  router: any;
 
   someRecursiveFunction() {
     this.someRecursiveFunction(); // This will cause a stack overflow
+  }
+
+isLoggedIn(): boolean {
+  return !!sessionStorage.getItem('user');
 }
+
+logout(): void {
+  sessionStorage.removeItem('user');
+  // Optionally clear all session storage:
+  // sessionStorage.clear();
+  this.router.navigate(['/login']);
 }
+ngOnInit() {
+  console.log('User is logged in:', this.isLoggedIn());
+}
+
+}
+

@@ -1,0 +1,68 @@
+mat-card {
+  max-width: 400px;
+  margin: 2em auto;
+  text-align: center;
+  margin-left: 60%;
+}
+
+mat-form-field {
+  display: block;
+}
+.h2 {
+    margin-top: 0;
+    padding-top: 0px;
+    font-size: 40px;
+    text-decoration:  underline;
+    color: #213555; /* Ensure the text color is visible */
+}
+.mat-button{
+    text-decoration: underline;
+    color: cadetblue;
+    border-radius: 8px; /* Rounded corners */
+    transition: transform 0.2s, box-shadow 0.2s; /* Smooth transition effects */
+}
+
+.auth-card {
+  max-width: 400px;
+  margin: 48px auto;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.09);
+  background: #fff;
+}
+
+.auth-title {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.switch-link {
+  margin-top: 16px;
+  text-align: center;
+}
+
+.error-message {
+  color: #e53935;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.spinner-overlay {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 16px 0;
+}
+.my-custom-btn {
+  background: linear-gradient(90deg, #6a11cb 0%, #2575fc 100%);
+  color: #fff;
+}
