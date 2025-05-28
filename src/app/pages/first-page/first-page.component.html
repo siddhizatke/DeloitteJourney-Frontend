@@ -1,0 +1,25 @@
+<div class="landing-container">
+  <div class="landing-header-row">
+    <h1>My Deloitte Journey</h1>
+    <button class="login-btn" (click)="login()" *ngIf="!isLoggedIn">Login</button>
+    <button class="logout-btn" (click)="logout()" *ngIf="isLoggedIn">Logout</button>
+  </div>
+  <div class="cards-grid">
+    <div class="card" (click)="navigateTo('/aboutme')">
+      <h3>About Me</h3>
+      <p>Discover my profile and personal details.</p>
+    </div>
+    <div class="card" (click)="navigateTo('/trainingactivities')">
+      <h3>Training Activities</h3>
+      <p>Track my learning and development progress.</p>
+    </div>
+    <div class="card" (click)="navigateTo('/trainingselfie')">
+      <h3>Training Selfie</h3>
+      <p>My training moments.</p>
+    </div>
+    <div class="card" (click)="navigateTo('/teamselfie')">
+      <h3>Team Selfie</h3>
+      <p>Celebrate team spirit with group selfies.</p>
+    </div>
+  </div>
+</div>
