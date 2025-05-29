@@ -82,7 +82,16 @@ body {
   list-style-type: none;
   top: 0px;
 }
-
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  height: 100vh;
+  min-width: 100vw;
+  min-height: 100vh;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
 .col-md-2 {
   flex: 0 0 17%; /* Ensure it takes 20% of the width */
   width: 40px;
@@ -104,4 +113,19 @@ body {
 
 .selfieCarousel {
   top: 0px;
+}
+.error-snackbar {
+  background: #ffebee !important; /* Much lighter red background */
+  color: #d32f2f !important; /* Darker red text for contrast */
+  font-weight: 500 !important; /* Medium weight text */
+  font-size: 16px !important; /* Standard size */
+  border-radius: 4px !important; /* Standard Material Design radius */
+  border-left: 4px solid #d32f2f !important; /* Red accent border */
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1) !important; /* Subtle shadow */
+  padding: 14px 16px !important; /* Standard padding */
+}
+
+.error-snackbar .mat-simple-snackbar-action {
+  color: #d32f2f !important; /* Red button text to match main text */
+  font-weight: 500 !important; /* Match text weight */
 }

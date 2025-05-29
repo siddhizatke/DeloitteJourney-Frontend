@@ -23,15 +23,22 @@ export class TeamselfieComponent {
   editTeamSelfieDescription: string = '';
   editTeamSelectedImage: File | null = null;
   editTeamImageBase64: string = ''; // To store the current image URL
-  successMessage: string = '';
+   formErrorMessage: string = '';
+   successMessage: string = '';
   editingTeamSelfieId: number | null = null;
   imageLoaded: boolean = false; // Flag to track if the image is loaded
   loading: boolean = true;
   http: any;
+  userRole: string = '';
   constructor(private teamselfieService: TeamselfieService, private cdr: ChangeDetectorRef, private modalService: NgbModal) {}
 
   ngOnInit(): void {
     this.loadTeamSelfies(); // Load the team selfies when the component initializes
+    const user = sessionStorage.getItem('user');
+    if (user) {
+      this.userRole = JSON.parse(user).role; // Ensure 'roles' matches the backend response field
+    console.log('User role:', this.userRole);
+    }
   }
 
   // Load the list of team selfies from the service
@@ -48,7 +55,12 @@ export class TeamselfieComponent {
   );
 }
 
-    
+  private clearMessages() {
+    setTimeout(() => {
+      this.successMessage = '';
+      this.formErrorMessage = '';
+    }, 3000);
+  }  
     onImageLoad(team: Teamselfie) {
       team.imageLoaded = true;
       this.cdr.detectChanges(); // Ensures the UI updates immediately
@@ -96,56 +108,65 @@ export class TeamselfieComponent {
     if (this.selectedImage) {
       this.teamselfieService.addTeamSelfie(this.newSelfieDescription, this.selectedImage).subscribe(
         (response: Teamselfie) => {
-          this.successMessage = 'Team selfie added successfully!'; // Set success message
-          this.teamselfieList.push(response); // Add the new selfie to the list
-          this.cdr.detectChanges(); // Trigger change detection
-          this.modalService.dismissAll(); // Close the modal
+          this.successMessage = 'Team selfie added successfully!';
+          this.teamselfieList.push(response);
+          this.cdr.detectChanges();
+          this.modalService.dismissAll();
+          this.clearMessages();
         },
         (error) => {
-          console.error('Error adding team selfie:', error); // Log any errors
+          this.formErrorMessage = error?.error?.message || 'Failed to add team selfie. Please try again.';
+          this.clearMessages();
         }
       );
+    } else {
+      this.formErrorMessage = 'Please select an image.';
+      this.clearMessages();
     }
   }
 
   // Edit an existing training selfie
   editSelfie() {
-  if (this.editingTeamSelfieId !== null) {
-    const formData = new FormData();
-    formData.append('Id', this.editingTeamSelfieId.toString());
-    formData.append('TeamDescription', this.editTeamSelfieDescription);
-    if (this.editTeamSelectedImage) {
-      formData.append('TeamImage', this.editTeamSelectedImage);
-    }
-
-    this.teamselfieService.updateTeamSelfie(this.editingTeamSelfieId, formData).subscribe(
-      () => {
-        this.successMessage = 'Training selfie updated successfully!';
-        this.loadTeamSelfies(); // Reload from backend to get new Base64
-        this.cdr.detectChanges();
-        this.modalService.dismissAll();
-      },
-      (error: any) => {
-        console.error('Error editing training selfie:', error);
-        alert('Failed to update training selfie. Please try again.');
+    if (this.editingTeamSelfieId !== null) {
+      const formData = new FormData();
+      formData.append('Id', this.editingTeamSelfieId.toString());
+      formData.append('TeamDescription', this.editTeamSelfieDescription);
+      if (this.editTeamSelectedImage) {
+        formData.append('TeamImage', this.editTeamSelectedImage);
       }
-    );
-  } else {
-    console.error('Editing Selfie ID is null');
+
+      this.teamselfieService.updateTeamSelfie(this.editingTeamSelfieId, formData).subscribe(
+        () => {
+          this.successMessage = 'Team selfie updated successfully!';
+          this.loadTeamSelfies();
+          this.cdr.detectChanges();
+          this.modalService.dismissAll();
+          this.clearMessages();
+        },
+        (error: any) => {
+          this.formErrorMessage = error?.error?.message || 'Failed to update training selfie. Please try again.';
+          this.clearMessages();
+        }
+      );
+    }  else {
+      this.formErrorMessage = 'Editing Selfie ID is null';
+      this.clearMessages();
+    }
   }
-}
 
 
   // Delete a team selfie
   deleteSelfie(id: number) {
     this.teamselfieService.deleteTeamSelfie(id).subscribe(
       () => {
-        this.teamselfieList = this.teamselfieList.filter(item => item.id !== id); // Remove the deleted selfie from the list
-        this.successMessage = 'Team selfie deleted successfully!'; // Set success message
-        this.cdr.detectChanges(); // Trigger change detection
+        this.teamselfieList = this.teamselfieList.filter(item => item.id !== id);
+        this.successMessage = 'Team selfie deleted successfully!';
+        this.cdr.detectChanges();
+        this.clearMessages();
       },
       (error) => {
-        console.error('Error deleting team selfie:', error); // Log any errors
+        this.formErrorMessage = error?.error?.message || 'Failed to delete team selfie. Please try again.';
+        this.clearMessages();
       }
     );
   }

@@ -17,21 +17,25 @@ export class PagesdetailsService {
 
   constructor(private http: HttpClient) {}
 
-  refreshList(): void {
-    this.http.get<Pagesdetails[]>(environment.apiBaseUrl + "/user")
-      .subscribe((data: Pagesdetails[]) => {
+  refreshList(): Observable<Pagesdetails[]> {
+    return this.http.get<Pagesdetails[]>(environment.apiBaseUrl + "/user").pipe(
+      map((data: Pagesdetails[]) => {
         this.pagesDetailsList = data;
         this.pagesDetailsListSubject.next(data);
-      });
+        return data;
+      })
+    );
   }
 
-  refreshPhotoList(): void {
-    this.http.get<PagesdetailsPhotos[]>(`${environment.apiBaseUrl}/UserPhotos`)
-      .subscribe((photo: PagesdetailsPhotos[]) => {
+  refreshPhotoList(): Observable<PagesdetailsPhotos[]> {
+    return this.http.get<PagesdetailsPhotos[]>(`${environment.apiBaseUrl}/UserPhotos`).pipe(
+      map((photo: PagesdetailsPhotos[]) => {
         this.PagesdetailsPhotosList = photo;
         this.PagesdetailsPhotosListSubject.next(photo);
         console.log('PagesdetailsPhotosList in Service:', this.PagesdetailsPhotosList); // Debugging log
-      });
+        return photo;
+      })
+    );
   }
   updateUser(formData: FormData) {
     const url = `${environment.apiBaseUrl}/user/${formData.get('id')}`;

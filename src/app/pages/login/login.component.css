@@ -1,0 +1,158 @@
+body, html {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden; /* Prevent scrollbar */
+}
+
+:host {
+  display: block;
+  min-height: 100vh;
+  background-image: url('/Photos/bg.jpg'); /* Update with your image path */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+mat-card {
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto; /* Center horizontally */
+  border-radius: 18px;
+  box-shadow: 0 8px 32px rgba(33,53,85,0.18);
+  background: linear-gradient(135deg, #fff 70%, #e3e9f7 100%);
+  padding: 24px 20px; /* Reduce padding to make card more compact */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+mat-form-field {
+  display: block;
+  width: 100%; /* Ensure form fields take full width */
+}
+
+.h2 {
+  margin-top: 0;
+  padding-top: 0px;
+  font-size: 40px;
+  text-decoration: underline;
+  color: #213555;
+  text-align: center; /* Center the text */
+}
+
+.mat-button{
+  text-decoration: underline;
+  color: cadetblue;
+  border-radius: 8px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.auth-card {
+  max-width: 400px;
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent card */
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.auth-title h2 {
+  color: #213555;
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+  letter-spacing: 1px;
+  text-align: center; /* Center the text */
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.switch-link {
+  margin-top: 16px;
+  text-align: center;
+}
+
+.switch-link button {
+  color: #2575fc;
+  text-decoration: underline;
+  font-weight: 500;
+}
+
+.error-message {
+  color: #e53935;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.spinner-overlay {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 16px 0;
+}
+
+button[mat-raised-button] {
+  background: linear-gradient(90deg, #6a11cb 0%, #2575fc 100%);
+  color: #fff;
+  font-weight: 600;
+  border-radius: 25px;
+  padding: 12px 0;
+  margin-top: 8px;
+  box-shadow: 0 2px 8px rgba(33,53,85,0.10);
+  transition: background 0.2s, box-shadow 0.2s;
+  width: 100%; /* Make button take full width */
+}
+
+button[mat-raised-button]:hover {
+  background: linear-gradient(90deg, #2575fc 0%, #6a11cb 100%);
+  box-shadow: 0 4px 16px rgba(33,53,85,0.18);
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  mat-card {
+    width: 92%; /* Slightly less than 100% to prevent touching edges */
+    padding: 20px 16px;
+    margin: 0 auto; /* Center horizontally */
+  }
+  
+  .auth-title h2 {
+    font-size: 1.8rem;
+    margin-top: 0; /* Remove extra top margin */
+  }
+}
+
+@media (max-width: 400px) {
+  mat-card {
+    padding: 16px 12px;
+    width: 95%;
+  }
+  
+  .h2 {
+    font-size: 32px; /* Make title smaller on very small screens */
+    margin-top: 0;
+    padding-top: 0;
+  }
+  
+  .auth-title h2 {
+    font-size: 1.5rem;
+  }
+  
+  button[mat-raised-button] {
+    padding: 10px 0;
+  }
+}

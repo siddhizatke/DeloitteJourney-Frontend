@@ -1,5 +1,7 @@
 <div class="container-fluid">
   <!-- Top Navigation Bar -->
+    <nav *ngIf="!isFirstPage()&& !isLoginPage()" class="navbar navbar-expand-md navbar-light shadow-sm" style="width:auto">
+    <!-- ...navbar code... -->
   <nav class="navbar navbar-expand-md navbar-light shadow-sm" style=width:auto>
     <div class="container-fluid justify-content-center">
       <ul class="navbar-nav">
@@ -15,8 +17,12 @@
         <li class="nav-item">
           <a class="nav-link text-center" routerLink="/teamselfie" routerLinkActive="active-link">Team Selfie</a>
         </li>
+      <li class="nav-item" *ngIf="isLoggedIn()">
+       <a class="nav-link text-center"style="colour:white" (click)="logout()">Logout</a>
+       </li>
       </ul>
     </div>
+  </nav>
   </nav>
 
   <!-- Main Content -->
