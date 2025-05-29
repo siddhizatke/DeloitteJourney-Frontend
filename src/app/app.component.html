@@ -1,5 +1,7 @@
 <div class="container-fluid">
   <!-- Top Navigation Bar -->
+    <nav *ngIf="!isFirstPage()&& !isLoginPage()" class="navbar navbar-expand-md navbar-light shadow-sm" style="width:auto">
+    <!-- ...navbar code... -->
   <nav class="navbar navbar-expand-md navbar-light shadow-sm" style=width:auto>
     <div class="container-fluid justify-content-center">
       <ul class="navbar-nav">
@@ -20,6 +22,7 @@
        </li>
       </ul>
     </div>
+  </nav>
   </nav>
 
   <!-- Main Content -->
